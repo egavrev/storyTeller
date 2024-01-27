@@ -53,9 +53,7 @@ def app():
 
     topic = st.selectbox('Choose a topic:', [t[0] for t in topics])
     setting = st.selectbox('Choose a setting:', [s[0] for s in settings])
-    backstory = st.text_area('Enter a backstory for your story:', value="""he story is about how a little boy named Maxim and his dad help their friends. 
-                             They have a fun and adventurous transformer robot friend named Bumblebee, a strict but kind Optimus, 
-                             and a garbage truck named Albert who loves to work and clean up everything. And how do they fight bully Megatron""", height=150)
+    backstory = st.text_area('Enter a backstory for your story:', value="""type here""", height=150)
 
     if st.button('Generate Story'):
         story = generate_story(topic, setting, backstory)
