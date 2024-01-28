@@ -13,6 +13,14 @@ def create_database():
     cursor.execute('''CREATE TABLE IF NOT EXISTS settings (
                       id INTEGER PRIMARY KEY,
                       name TEXT NOT NULL)''')
+    
+    cursor.execute('''CREATE TABLE stories (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    topic TEXT NOT NULL,
+                    setting TEXT NOT NULL,
+                    backstory TEXT NOT NULL,
+                    story TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);''')
 
     # Inserting some predefined topics and settings
     topics = [('honesty',), ('bravery',), ('friendship',)]
@@ -23,6 +31,7 @@ def create_database():
 
     connection.commit()
     connection.close()
+    
 
 if __name__ == '__main__':
     create_database()
