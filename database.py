@@ -14,7 +14,7 @@ def create_database():
                       id INTEGER PRIMARY KEY,
                       name TEXT NOT NULL)''')
     
-    cursor.execute('''CREATE TABLE stories (
+    cursor.execute('''CREATE TABLE IF NOT EXIST stories (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     topic TEXT NOT NULL,
                     setting TEXT NOT NULL,
