@@ -167,21 +167,17 @@ def app():
     with st.sidebar:
         st.header('Generated Stories')
         saved_stories=load_storeis()
-        for story in saved_stories:
-            story_id = story[0]
-            story_topic = story[1]
-            story_setting = story[2]
-            backstory = story[3]
-            story_body = story[4]
-            story_name = story[5]
-            img = story[6]
-            st.subheader(f"Story ID: {story_id}")
-            st.write(f"Topic: {story_name}")
-            if st.button(f"Show Story {story_id}"):
-                #open new page in streamlit and show the story
-                st.markdown(f"# {story_name}")
-                st.image(img,caption=f"Generated image for story",use_column_width=True)
-                st.text_area('Your Story:', story_body, height=550,key="story_content")
+        #form which will be used to filter the stories
+        form = st.form(key='my_form')
+        #form components
+        selected_topic = form.selectbox('Filter by topic:', [t[5] for t in saved_stories])
+        button_form = form.form_submit_button(label='Filter')        
+        #load the stories into the main page
+        
+    if button_form:
+            st.write(selected_topic)
+
+
                 
 if __name__ == '__main__':
     app()
