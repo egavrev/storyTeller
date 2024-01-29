@@ -70,15 +70,13 @@ def update_image(image_data, text_upper, text_lower):
 
     return  img_binary
     
-def save_story(topic, setting, backstory, story_name, story, image_url):
+def save_story(topic, setting, backstory, story_name, story, image_data):
     # Generate the image and get the URL
-    image_data = save_image_from_url(image_url)
-    
     # Establish a connection to the SQLite database
     connection = sqlite3.connect('story_database.db')
     cursor = connection.cursor()    
     # SQL query to insert the new story and image data into the stories table
-    cursor.execute('INSERT INTO stories (topic, setting, backstory, story_name, story, image_data) VALUES (?, ?, ?, ?, ?, ?)',
+    cursor.execute('INSERT INTO stories (topic, setting, backstory, story_name, story_body, image) VALUES (?, ?, ?, ?, ?, ?)',
                    (topic, setting, backstory, story_name, story, sqlite3.Binary(image_data)))
     
     # Commit the changes to the database
@@ -86,6 +84,16 @@ def save_story(topic, setting, backstory, story_name, story, image_url):
     
     # Close the database connection
     connection.close()
+def load_storeis():
+    connection = sqlite3.connect('story_database.db')
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM stories')
+    stories = cursor.fetchall()
+
+    connection.close()
+
+    return stories
 
 def fetch_topics_settings():
     connection = sqlite3.connect('story_database.db')
@@ -103,9 +111,10 @@ def fetch_topics_settings():
 
 def generate_story(topic, setting,backstory):
     messages = [{"role": "user", "content": f"""Given that the topic is {topic} and the setting is {setting}, here's a backstory: {backstory}. Following strict JSON format to be used: 
-              {{"Sotry_name" : "Story Name - in 2-5 words maximum", "Title_image" : "Description of tile image in 2-3 phrases maximum", "Story_body": "The story itself in 2-5 paragraphs"}}."""}]
+              {{"Sotry_name" : "Story Name - in 1-2 words maximum", "Title_image" : "Description of tile image in 2-3 phrases maximum", "Story_body": "The story itself in 2-5 paragraphs"}}."""}]
     response = client.chat.completions.create(model="gpt-4", messages=messages)
     data_dict = json.loads(response.choices[0].message.content,strict=False)
+    print(response.choices[0].message.content)
     # Extract the parts you want
     story_name = data_dict['Story_name']
     title_image = data_dict['Title_image']
@@ -119,9 +128,10 @@ def image_generation(story):
     response = client.images.generate(
             model="dall-e-3",
             quality="hd",
-            prompt = f"generate title image for the sotry {story}, draw it as cartoon for little kids - 3 years",
+            prompt = f"generate title image for the story {story}, draw it as cartoon for little kids - 3 years",
             n = 1,
             size="1024x1024")
+    print (response.data[0].url)
     return response.data[0].url
           
                 
@@ -147,29 +157,31 @@ def app():
         
         image_url= image_generation(title_image)
         st.markdown(f"# {story_name}")
-        
+        img = update_image(image_url,story_name, "for Maxim")
 
-        st.image(update_image(image_url,story_name, "for Maxim"), caption=f"Generated image for sotry",
-                         use_column_width=True)
-        st.text_area('Your Story:', story_body, height=550)
+        save_story(topic,setting,backstory,story_name,story_body,img)
 
-    """ with st.sidebar:
+        st.image( img,caption=f"Generated image for story",use_column_width=True)
+        st.text_area('Your Story:', story_body, height=550,key="story_content")
+
+    with st.sidebar:
         st.header('Generated Stories')
-        for story_id, story_topic, story_setting, story_content, story_date in saved_stories:
+        saved_stories=load_storeis()
+        for story in saved_stories:
+            story_id = story[0]
+            story_topic = story[1]
+            story_setting = story[2]
+            backstory = story[3]
+            story_body = story[4]
+            story_name = story[5]
+            img = story[6]
             st.subheader(f"Story ID: {story_id}")
-            st.write(f"Topic: {story_topic}")
-            st.write(f"Setting: {story_setting}")
-            st.write(f"Created at: {story_date}")
+            st.write(f"Topic: {story_name}")
             if st.button(f"Show Story {story_id}"):
-                st.text_area(f"Story {story_id}:", story_content, height=250)
-    """
-
-
-    
-
-    #if st.button('Generate Image'):
-    #    story = generate_story(topic, setting, backstory)
-    #    st.text_area('Your Story:', story, height=250)
-
+                #open new page in streamlit and show the story
+                st.markdown(f"# {story_name}")
+                st.image(img,caption=f"Generated image for story",use_column_width=True)
+                st.text_area('Your Story:', story_body, height=550,key="story_content")
+                
 if __name__ == '__main__':
     app()

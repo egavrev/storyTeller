@@ -14,17 +14,20 @@ def create_database():
                       id INTEGER PRIMARY KEY,
                       name TEXT NOT NULL)''')
     
-    cursor.execute('''CREATE TABLE IF NOT EXIST stories (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    topic TEXT NOT NULL,
-                    setting TEXT NOT NULL,
-                    backstory TEXT NOT NULL,
-                    story TEXT NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS stories (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        topic TEXT NOT NULL,
+                        setting TEXT NOT NULL,
+                        backstory TEXT NOT NULL,
+                        story_body TEXT NOT NULL,
+                        story_name TEXT NOT NULL,
+                        image mage BLOB,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);''')
 
     # Inserting some predefined topics and settings
     topics = [('honesty',), ('bravery',), ('friendship',)]
     settings = [('robo-city',), ('jungle',), ('ancient temple',)]
+
 
     cursor.executemany('INSERT INTO topics (name) VALUES (?)', topics)
     cursor.executemany('INSERT INTO settings (name) VALUES (?)', settings)
