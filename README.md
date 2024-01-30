@@ -1,5 +1,5 @@
 # Story Generator for Kids
-This is a Streamlit web application that generates stories for kids. 
+This is a Streamlit web application that generates stories for kids using GenAI for content creation image/text.
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
@@ -21,7 +21,7 @@ To run Story Generator for Kids, follow these steps:
 
 
 
-# Versions 
+# Versions history
 ## v.0.1
 - [X] generate title of story - 2 3 words, image_prompt and story itself. 
 - [X] parse story data to get story name, prompt and story
@@ -40,3 +40,5 @@ To run Story Generator for Kids, follow these steps:
 - [ ] add different language support
 - [ ] when story title it is the same name as existing add index.
 - [ ] split main file in two - side bar and main content
+### v.0.5
+- [ ] add option to be able to use text to speech for reading stores. 
