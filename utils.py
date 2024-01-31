@@ -1,6 +1,7 @@
 
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+import requests
 
 
 def save_image_from_url(url):
