@@ -34,10 +34,10 @@ To run Story Generator for Kids, follow these steps:
 - [X] display story content in specific area. 
 ## v.0.3
 - [X] provide generic setting: type of image - cartoon, realistic; name and age of kid, add setting and backstory.
-- [ ] option to select an langue to which story might be translated
+- [ ] fix issues with file split
 - [X] rebuild project structure add util.py and request.py for utility and working with sqldb functions 
 ### v.0.4
-- [ ] add different language support
+- [X] add different language support
 - [ ] when story title it is the same name as existing add index.
 - [ ] split main file in two - side bar and main content
 ### v.0.5

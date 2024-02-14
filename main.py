@@ -24,12 +24,12 @@ def app():
             backstory = st.text_area('Enter a backstory for your story:', value="""The story is about how a little boy named Maxim and his dad help their friends. 
                                     They have a fun and adventurous transformer robot friend named Bumblebee, a strict but kind Optimus, 
                                     and a garbage truck named Albert who loves to work and clean up everything.""", height=150)
-            
+            lang = st.selectbox('Choose a language:', ['English', 'Romanian', 'Russian'])
             kid_name = st.text_input('Enter a name for your kid:', value='Maxim', max_chars=20)
             kid_age = st.number_input('Enter an age for your kid:', value=5, min_value=1, max_value=12, step=1)
             image_type = st.selectbox('Choose an image type:', ['photorealistic', 'illustration', 'cartoon'])
             if st.button('Generate Story'):
-                story_name,title_image,story_body = generate_story(topic, setting, backstory, kid_name, kid_age)
+                story_name,title_image,story_body = generate_story(topic, setting, backstory, kid_name, kid_age, lang)
                 
                 image_url= image_generation(title_image,image_type,kid_age)
                 img = update_image(image_url,story_name, f"for {kid_name}")
