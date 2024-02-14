@@ -30,7 +30,6 @@ def app():
             image_type = st.selectbox('Choose an image type:', ['photorealistic', 'illustration', 'cartoon'])
             if st.button('Generate Story'):
                 story_name,title_image,story_body = generate_story(topic, setting, backstory, kid_name, kid_age, lang)
-                
                 image_url= image_generation(title_image,image_type,kid_age)
                 img = update_image(image_url,story_name, f"for {kid_name}")
                 save_story(topic,setting,backstory,story_name,story_body,img)

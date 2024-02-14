@@ -32,5 +32,4 @@ def image_generation(story, image_type,kid_age):
             prompt = f"generate title image for the story {story}, draw it as {image_type} for kids of {kid_age} age ",
             n = 1,
             size="1024x1024")
-    print (response.data[0].url)
     return response.data[0].url
